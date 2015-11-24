@@ -1,5 +1,6 @@
 package com.rongpencil.app.stories;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
@@ -7,13 +8,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.ImageView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener {
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
+
+    int lastTopValue = 0;
+    ImageView backgroundImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +41,7 @@ public class MainActivity extends ActionBarActivity {
         StoriesParser parser = new StoriesParser();
         mAdapter = new CardAdapter(parser.GetStories());
         mRecyclerView.setAdapter(mAdapter);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,5 +63,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        Rect rect = new Rect();
+        backgroundImage.getLocalVisibleRect(rect);
+        if (lastTopValue != rect.top) {
+            lastTopValue = rect.top;
+            backgroundImage.setY((float) (rect.top / 2.0));
+        }
     }
 }

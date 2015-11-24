@@ -1,9 +1,9 @@
 package com.rongpencil.app.stories;
 
 public class StoryData {
+
     private String mTitle;
     private String mSummary;
-    private int mThumbnail;
     private String mImagePreviewUrl;
 
     public String getTitle() {
@@ -22,16 +22,12 @@ public class StoryData {
         this.mSummary = summary;
     }
 
-    public int getThumbnail() {
-        return mThumbnail;
+    public String getImageUrl() {
+        return this.mImagePreviewUrl;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.mThumbnail = thumbnail;
+    public void setImageUrl(String url) {
+        url = url.replaceAll("200x150x1","320x150x1");
+        this.mImagePreviewUrl = url;
     }
-
-    public String getImageUrl()   { return this.mImagePreviewUrl; }
-
-    public void setImageUrl(String url) { this.mImagePreviewUrl = url; }
-
 }

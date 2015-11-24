@@ -39,10 +39,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         StoryData story = mItems.get(i);
 
         // Bind data to the view elements
-        viewHolder.tvNature.setText(story.getTitle());
-        viewHolder.tvDesNature.setText(story.getSummary());
+        viewHolder.tvTitle.setText(story.getTitle());
+        viewHolder.tvSummary.setText(story.getSummary());
         if(!story.getImageUrl().isEmpty()){
-            imageLoader.DisplayImage(story.getImageUrl(), viewHolder.imgThumbnail);
+            imageLoader.DisplayImage(story.getImageUrl(), viewHolder.imgPreivew);
         }
     }
 
@@ -53,15 +53,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView imgThumbnail;
-        public TextView tvNature;
-        public TextView tvDesNature;
+        public ImageView imgPreivew;
+        public TextView tvTitle;
+        public TextView tvSummary;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imgThumbnail = (ImageView)itemView.findViewById(R.id.img_thumbnail);
-            tvNature = (TextView)itemView.findViewById(R.id.tv_nature);
-            tvDesNature = (TextView)itemView.findViewById(R.id.tv_des_nature);
+            imgPreivew = (ImageView)itemView.findViewById(R.id.iv_previewImg);
+            tvTitle = (TextView)itemView.findViewById(R.id.tv_title);
+            tvSummary = (TextView)itemView.findViewById(R.id.tv_summary);
         }
     }
 }

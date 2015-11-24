@@ -44,12 +44,6 @@ public class LazyAdapter extends BaseAdapter {
         StoryData storyData = data.get(position);
 
         ((TextView)vi).setText(storyData.getTitle());
-        //TextView title = (TextView)vi.findViewById(R.id.title); // title
-        //ImageView thumb_image = (ImageView)vi.findViewById(R.id.list_image); // thumb image
-
-        // Setting all values in listview
-        //title.setText(story.get(StoriesParser.TAG_Title));
-        //imageLoader.DisplayImage(story.get(StoriesParser.TAG_PreviewImg), thumb_image);
 
         return vi;
     }
