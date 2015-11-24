@@ -1,24 +1,19 @@
 package com.rongpencil.app.stories;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener {
 
-    private int lastTopValue = 0;
+public class MainActivity extends ActionBarActivity {
 
-    private ListView listView;
-    private ImageView backgroundImage;
-    private LazyAdapter adapter;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,47 +24,40 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        listView = (ListView) findViewById(R.id.list);
 
+        mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // fetch data
         StoriesParser parser = new StoriesParser();
-        adapter = new LazyAdapter(this, parser.GetStories());
-
-        // inflate custom header and attach it to the list
-        LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.custom_header, listView, false);
-        listView.addHeaderView(header, null, false);
-
-        adapter = new LazyAdapter(this, parser.GetStories());
-        listView.setAdapter(adapter);
-
-        // we take the background image and button reference from the header
-        backgroundImage = (ImageView) header.findViewById(R.id.listHeaderImage);
-
-        listView.setOnScrollListener(this);
-
-
-        // click event for single list row
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-            }
-        });
-    }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        mAdapter = new CardAdapter(parser.GetStories());
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
+
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        Rect rect = new Rect();
-        backgroundImage.getLocalVisibleRect(rect);
-        if (lastTopValue != rect.top) {
-            lastTopValue = rect.top;
-            backgroundImage.setY((float) (rect.top / 2.0));
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 }

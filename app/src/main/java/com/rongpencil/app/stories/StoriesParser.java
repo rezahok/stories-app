@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class StoriesParser {
 
@@ -31,15 +30,15 @@ public class StoriesParser {
     public StoriesParser() {
     }
 
-    public ArrayList<HashMap<String, String>> GetStories() {
+    public ArrayList<StoryData> GetStories() {
 
         String jsonStr = getJsonFromUrl(JsonURL); // getting Json from URL
 
         // contacts JSONArray
         JSONArray stories = null;
 
-        // Hashmap for ListView
-        ArrayList<HashMap<String, String>> storiesList = new ArrayList<HashMap<String, String>>();
+        // List to hold stories
+        ArrayList<StoryData> storiesList = new ArrayList<StoryData>();
 
         if (jsonStr != null) {
             try {
@@ -52,19 +51,11 @@ public class StoriesParser {
                 for (int i = 0; i < stories.length(); i++) {
                     JSONObject c = stories.getJSONObject(i);
 
-
                     // tmp hashmap for single story
-                    HashMap<String, String> story = new HashMap<>();
-
-                    // adding each child node to HashMap key => value
-                    story.put(TAG_Title, c.getString(TAG_Title));
-                    //story.put(TAG_Summary, c.getString(TAG_Summary));
-                    //story.put(TAG_BODY,c.getString(TAG_BODY));
-                    String url = c.getString(TAG_PreviewImg);
-                    if(url != null) {
-                        story.put(TAG_PreviewImg, url);
-                    }
-                    //story.put(TAG_PublishedDate, c.getString(TAG_PublishedDate));
+                    StoryData story = new StoryData();
+                    story.setTitle(c.getString(TAG_Title));
+                    story.setSummary(c.getString(TAG_Summary));
+                    story.setImageUrl(c.getString(TAG_PreviewImg));
 
                     // adding contact to contact list
                     storiesList.add(story);
